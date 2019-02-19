@@ -35,7 +35,7 @@ export default {};
   background-color: blue;
 }
 .middle {
-    line-height: 60px;
+    /* line-height: 60px; */
     text-align: center;
     color: #fff;
 }
