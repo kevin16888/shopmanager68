@@ -26,30 +26,36 @@ export default {
   methods: {
     //发送登录请求
     //前提：启动api-server服务器 node app.js
-    handlelogin() {
-      this.$http
-        .post(`login`, this.formdata)
-        .then(res => {
-          //   console.log(res);
-          const {
-            data: {
-              data,
-              meta: { msg, status }
-            }
-          } = res;
-          if (status === 200) {
-            // console.log("success----");
-            //渲染home.vue组件
-            this.$router.push({
-              name: "home"
-            });
-          } else {
-            this.$message.error(msg);
-          }
-        })
-        .catch(err => {
-          //   console.log(err);
+    async handlelogin() {
+      const res = await this.$http.post(`login`, this.formdata);
+      console.log(res);
+      const {
+        data: {
+          data: { token },
+          meta: { msg, status }
+        }
+      } = res;
+      if (status === 200) {
+        //把正确的用户的token保存起来
+        //存值
+        localStorage.setItem("token",token);
+        //取值
+        // const aa = localStorage.getItem("token");
+        // console.log(aa);
+        // console.log("success----");
+        //渲染home.vue组件
+        this.$router.push({
+          name: "home"
         });
+      } else {
+        this.$message.error(msg);
+      }
+      // .then(res => {
+      //   //   console.log(res);
+      // })
+      // .catch(err => {
+      //   //   console.log(err);
+      // });
     }
   }
 };
