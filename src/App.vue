@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-
-    <router-view/>
+    <router-view></router-view>
+    <!-- 登录组件login-wrap -->
   </div>
 </template>
 
@@ -12,5 +12,7 @@ export default {
 </script>
 
 <style>
-
+#app {
+  height: 100%;
+}
 </style>
