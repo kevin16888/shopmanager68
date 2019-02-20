@@ -14,7 +14,62 @@
       </el-row>
     </el-header>
     <el-container>
-      <el-aside class="aside" width="200px">Aside</el-aside>
+      <el-aside class="aside" width="200px">
+        <el-menu default-active="2" class="el-menu-vertical-demo">
+          <!-- 1 -->
+          <el-submenu index="1">
+            <template slot="title">
+              <i class="el-icon-location"></i>
+              <span>用户管理</span>
+            </template>
+            <el-menu-item index="1-1">
+              <i class="el-icon-menu"></i>
+              <span>用户列表</span>
+            </el-menu-item>
+          </el-submenu>
+          <!-- 2 -->
+          <el-submenu index="2">
+            <template slot="title">
+              <i class="el-icon-location"></i>
+              <span>导航一</span>
+            </template>
+            <el-menu-item index="1-1">
+              <i class="el-icon-menu"></i>选项1
+            </el-menu-item>
+          </el-submenu>
+          <!-- 3 -->
+          <el-submenu index="3">
+            <template slot="title">
+              <i class="el-icon-location"></i>
+              <span>导航一</span>
+            </template>
+            <el-menu-item index="1-1">
+              <i class="el-icon-menu"></i>选项1
+            </el-menu-item>
+          </el-submenu>
+          <!-- 4 -->
+          <el-submenu index="4">
+            <template slot="title">
+              <i class="el-icon-location"></i>
+              <span>导航一</span>
+            </template>
+            <el-menu-item index="1-1">
+              <i class="el-icon-menu"></i>选项1
+            </el-menu-item>
+          </el-submenu>
+          <!-- 5 -->
+          <el-submenu index="5">
+            <template slot="title">
+              <i class="el-icon-location"></i>
+              <span>导航一</span>
+            </template>
+            <el-menu-item index="1-1">
+              <i class="el-icon-menu"></i>选项1
+            </el-menu-item>
+          </el-submenu>
+
+        </el-menu>
+      </el-aside>
       <el-main class="main">Main</el-main>
     </el-container>
   </el-container>
@@ -26,21 +81,22 @@ export default {};
 
 <style>
 .container {
-  background-color: red;
+  height: 100%;
+  background-color: #b3c0d1;
 }
 .aside {
-  background-color: yellow;
+  /* background-color: yellow; */
 }
 .main {
-  background-color: blue;
+  /* background-color: blue; */
 }
 .middle {
-    /* line-height: 60px; */
-    text-align: center;
-    color: #fff;
+  line-height: 30px;
+  text-align: center;
+  color: #fff;
 }
 .logout {
-    line-height: 60px;
-    text-decoration: none;
+  line-height: 60px;
+  text-decoration: none;
 }
 </style>
