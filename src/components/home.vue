@@ -121,12 +121,12 @@ export default {
   height: 100%;
   background-color: #b3c0d1;
 }
-.aside {
-  /* background-color: yellow; */
-}
-.main {
-  /* background-color: blue; */
-}
+/* .aside {
+  background-color: yellow;
+} */
+/* .main {
+  background-color: blue;
+} */
 .middle {
   line-height: 30px;
   text-align: center;
