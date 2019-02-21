@@ -92,7 +92,8 @@
 
 <script>
 export default {
-  //必须先登录,才显示 home.vue
+  //页面加载之前必须先登录,才显示 home.vue
+
   beforeMount(){
     if(!localStorage.getItem("token")){
       this.$router.push({
@@ -108,7 +109,7 @@ export default {
     handleLoginout(){
       // 1.清除token
       localStorage.clear();
-      // 2.来到登录
+      // 2.来到登录页
       this.$router.push({
         name:"login"
       });
