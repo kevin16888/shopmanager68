@@ -101,9 +101,9 @@ export default {
       this.$message.warning("请先登录")
     }
   },
-  // mounted(){
-  //   console.log(123);
-  // },
+  mounted(){
+    console.log(123);
+  },
   methods: {
     handleLoginout(){
       // 1.清除token
