@@ -3,7 +3,7 @@ import Router from "vue-router";
 // import Login from '../components/login.vue'
 import Login from "@/components/login.vue";
 import Home from "@/components/home.vue";
-import User1 from "@/components/user1.vue";
+import Users from "@/components/user1.vue";
 
 Vue.use(Router);
 
@@ -13,11 +13,12 @@ export default new Router({
       name: "home",
       path: "/",
       component: Home,
+      //路由嵌套
       children: [
         {
-          name: "user1",
-          path: "/user1",
-          component: User1
+          name: "users",
+          path: "/users",
+          component: Users
         }
       ]
     },

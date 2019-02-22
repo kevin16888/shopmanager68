@@ -22,7 +22,7 @@
               <i class="el-icon-location"></i>
               <span>用户管理</span>
             </template>
-            <el-menu-item index="user1">
+            <el-menu-item index="users">
               <i class="el-icon-menu"></i>
               <span>用户列表</span>
             </el-menu-item>
@@ -127,12 +127,12 @@ export default {
   height: 100%;
   background-color: #b3c0d1;
 }
-/* .aside {
-  background-color: yellow;
-} */
-/* .main {
-  background-color: blue;
-} */
+.aside {
+  background-color: #e9eef3;
+}
+.main {
+  background-color: #e9eef3;
+}
 .middle {
   line-height: 30px;
   text-align: center;
