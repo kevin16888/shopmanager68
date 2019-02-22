@@ -117,7 +117,7 @@ export default {
       this.$message.warning("退出成功")
     }
   }
-};
+}
 </script>
 
 <style>
