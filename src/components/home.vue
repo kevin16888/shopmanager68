@@ -128,9 +128,11 @@ export default {
   background-color: #b3c0d1;
 }
 .aside {
+  height: 100%;
   background-color: #e9eef3;
 }
 .main {
+  height: 100%;
   background-color: #e9eef3;
 }
 .middle {
