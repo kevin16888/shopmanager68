@@ -51,11 +51,18 @@
         </template>
       </el-table-column>
       <el-table-column label="操作" width="160">
-        <!-- <template slot-scope="scope"> -->
+        <template slot-scope="scope">
         <el-button type="primary" icon="el-icon-edit" circle size="mini" plain></el-button>
-        <el-button type="danger" icon="el-icon-delete" circle size="mini" plain></el-button>
+        <el-button
+          @click="showMsgBoxDele(scope.row)"
+          type="danger"
+          icon="el-icon-delete"
+          circle
+          size="mini"
+          plain
+        ></el-button>
         <el-button type="success" icon="el-icon-check" circle size="mini" plain></el-button>
-        <!-- </template> -->
+        </template>
       </el-table-column>
     </el-table>
     <!-- 分页 -->
@@ -87,7 +94,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisibleAdd = false">取 消</el-button>
-        <el-button type="primary" @click="dialogFormVisibleAdd = false">确 定</el-button>
+        <el-button type="primary" @click="addUser()">确 定</el-button>
       </div>
     </el-dialog>
   </el-card>
@@ -121,9 +128,46 @@ export default {
     this.getTableData();
   },
   methods: {
+    //删除弹框
+    showMsgBoxDele(user) {
+      this.$confirm("确定要删掉?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(async () => {
+          //id->用户id数据->user.id
+          const res = await this.$http.delete(`users/${user.id}`);
+          const {meta:{ msg,status }} = res.data;
+          if(status === 200){
+            this.$message.success(msg);
+            this.getTableData();
+          }
+        })
+        .catch(() => {
+          this.$message.info('已取消删除！')
+        })
+    },
+    //添加用户，确定，发送请求
+    async addUser() {
+      const res = await this.$http.post(`users`, this.formdata);
+      // console.log(res);
+      //解构赋值
+      const {
+        meta: { msg, status }
+      } = res.data;
+      if (status === 201) {
+        // 关闭对话框
+        this.dialogFormVisibleAdd = false;
+        //更新表格
+        this.getTableData();
+      }
+    },
     //添加用户，打开对话框
-    showDiagAddUser(){
+    showDiagAddUser() {
       this.dialogFormVisibleAdd = true;
+      // 打开对话框，清空数据
+      this.formdata = {};
     },
     //清空时获取所有用户
     getAllUsers() {
