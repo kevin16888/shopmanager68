@@ -10,11 +10,17 @@
     <el-row class="searchBox">
       <el-col>
         <!-- 搜索框 -->
-        <el-input class="searchInput" placeholder="请输入内容" v-model="query">
-          <el-button slot="append" icon="el-icon-search"></el-button>
+        <el-input
+          @click="getAllUsers()"
+          clearable
+          class="searchInput"
+          placeholder="请输入内容"
+          v-model="query"
+        >
+          <el-button slot="append" icon="el-icon-search" @click="searchUser()"></el-button>
         </el-input>
         <!-- 添加按钮 -->
-        <el-button type="success" disabled>添加用户</el-button>
+        <el-button type="success" @click="showDiagAddUser()">添加用户</el-button>
       </el-col>
     </el-row>
 
@@ -63,6 +69,27 @@
       layout="total, sizes, prev, pager, next, jumper"
       :total="total"
     ></el-pagination>
+    <!-- 对话框--添加用户 -->
+    <el-dialog title="添加用户" :visible.sync="dialogFormVisibleAdd">
+      <el-form label-position="left" label-width="80px" :model="formdata">
+        <el-form-item label="用户名">
+          <el-input v-model="formdata.username"></el-input>
+        </el-form-item>
+        <el-form-item label="密码">
+          <el-input v-model="formdata.password"></el-input>
+        </el-form-item>
+        <el-form-item label="邮箱">
+          <el-input v-model="formdata.email"></el-input>
+        </el-form-item>
+        <el-form-item label="电话">
+          <el-input v-model="formdata.mobile"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisibleAdd = false">取 消</el-button>
+        <el-button type="primary" @click="dialogFormVisibleAdd = false">确 定</el-button>
+      </div>
+    </el-dialog>
   </el-card>
 </template>
 
@@ -76,7 +103,16 @@ export default {
       //为了区分是请求之后后台返回的值还是自己写的初始值，所以写-1
       total: -1,
       //表格数据
-      list: []
+      list: [],
+      //对话框数据，默认不显示
+      dialogFormVisibleAdd: false,
+      //对话框表单数据
+      formdata: {
+        username: "",
+        password: "",
+        email: "",
+        mobile: ""
+      }
     };
   },
   //   mounted(){}
@@ -85,6 +121,20 @@ export default {
     this.getTableData();
   },
   methods: {
+    //添加用户，打开对话框
+    showDiagAddUser(){
+      this.dialogFormVisibleAdd = true;
+    },
+    //清空时获取所有用户
+    getAllUsers() {
+      this.getTableData();
+    },
+    //搜索用户
+    searchUser() {
+      this.pagenum = 1; //解决BUG：从第1页开始展示
+      this.getTableData();
+    },
+    //分页相关方法
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
       //切换每页显示条数，按照新pagesize发送请求
