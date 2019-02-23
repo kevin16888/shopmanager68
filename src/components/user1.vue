@@ -19,7 +19,7 @@
     </el-row>
 
     <!-- 表格 -->
-    <el-table :data="list" style="width: 100%">
+    <el-table :data="list" style="width: 100%" height="300px">
       <!--     
       create_time: 1486720211
       email: "adsfad@qq.com"
@@ -46,13 +46,23 @@
       </el-table-column>
       <el-table-column label="操作" width="160">
         <!-- <template slot-scope="scope"> -->
-          <el-button type="primary" icon="el-icon-edit" circle size="mini" plain></el-button>
-          <el-button type="danger" icon="el-icon-delete" circle size="mini" plain></el-button>
-          <el-button type="success" icon="el-icon-check" circle size="mini" plain></el-button>
+        <el-button type="primary" icon="el-icon-edit" circle size="mini" plain></el-button>
+        <el-button type="danger" icon="el-icon-delete" circle size="mini" plain></el-button>
+        <el-button type="success" icon="el-icon-check" circle size="mini" plain></el-button>
         <!-- </template> -->
       </el-table-column>
     </el-table>
     <!-- 分页 -->
+    <el-pagination
+      class="page"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="pagenum"
+      :page-sizes="[2, 4, 6, 8]"
+      :page-size="2"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="total"
+    ></el-pagination>
   </el-card>
 </template>
 
@@ -62,7 +72,9 @@ export default {
     return {
       query: "",
       pagenum: 1,
-      pagesize: 10,
+      pagesize: 2,
+      //为了区分是请求之后后台返回的值还是自己写的初始值，所以写-1
+      total: -1,
       //表格数据
       list: []
     };
@@ -73,6 +85,19 @@ export default {
     this.getTableData();
   },
   methods: {
+    handleSizeChange(val) {
+      console.log(`每页 ${val} 条`);
+      //切换每页显示条数，按照新pagesize发送请求
+      this.pagenum = 1; //解决当前每页显示条数超出页码最大值问题，此时每页显示条数修改为从第1页开始展示
+      this.pagesize = val;
+      this.getTableData();
+    },
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`);
+      //当前第2页》点击第3页》触发该方法》val=3
+      this.pagenum = val;
+      this.getTableData();
+    },
     //获取表格数据
     async getTableData() {
       //需要授权的 API ，必须在请求头中使用 Authorization 字段提供 token 令牌
@@ -84,13 +109,14 @@ export default {
           this.pagesize
         }`
       );
-      // console.log(res);
+      console.log(res);
       //ES6解构赋值
       const {
         data,
         meta: { msg, status }
       } = res.data;
       if (status === 200) {
+        this.total = data.total;
         this.list = data.users;
         // console.log(this.list);
       }
@@ -108,5 +134,8 @@ export default {
 }
 .searchInput {
   width: 400px;
+}
+.page {
+  margin-top: 20px;
 }
 </style>
