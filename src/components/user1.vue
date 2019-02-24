@@ -145,7 +145,7 @@
             <el-option disabled label="请选择" :value="-1"></el-option>
             <!-- 将来获取角色名数据，用v-for遍历 -->
             <el-option
-              v-for="(item,i) in roles"
+              v-for="item in roles"
               :key="item.id"
               :label="item.roleName"
               :value="item.id"
@@ -199,7 +199,7 @@ export default {
     //--------分配角色，发送请求--------
     async setRole(){
       const res = await this.$http.put(`users/${this.currUserId}/role`,{rid:this.selectVal});
-      console.log(res);
+      // console.log(res);
       const {
         meta: { msg, status }
       } = res.data;
@@ -281,7 +281,7 @@ export default {
     //添加用户，确定，发送请求
     async addUser() {
       const res = await this.$http.post(`users`, this.formdata);
-      // console.log(res);
+      console.log(res);
       //解构赋值
       const {
         meta: { msg, status }
