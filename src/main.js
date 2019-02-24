@@ -3,6 +3,7 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import CusBread from '@/components/cusBread.vue'
 import '@/assets/css/base.css'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
@@ -22,6 +23,8 @@ Vue.filter('fmtdate',(v)=>{
   return moment(v).format('YYYY-MM-DD');
 })
 
+//全局自定义面包屑组件
+Vue.component(CusBread.name,CusBread);
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
