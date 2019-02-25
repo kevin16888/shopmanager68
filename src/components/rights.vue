@@ -6,7 +6,26 @@
 </template>
 
 <script>
-export default {};
+export default {
+  created() {
+    this.getTableData();
+  },
+  methods: {
+    async getTableData() {
+      // const AUTH_TOKEN = localStorage.getItem("token");
+      // this.$http.defaults.headers.common["Authorization"] = AUTH_TOKEN;
+      const res = await this.$http.get(`rights/list`);
+      console.log(res);
+      const {
+        data,
+        meta: { msg, status }
+      } = res.data;
+      if (status === 200) {
+        this.list = data;
+      }
+    }
+  }
+};
 </script>
 
 <style>

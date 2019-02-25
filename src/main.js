@@ -8,10 +8,11 @@ import '@/assets/css/base.css'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import moment from 'moment'
-import axios from 'axios'
-axios.defaults.baseURL = 'http://localhost:8888/api/private/v1/'
+import HttpServer from '@/http.js'
 
-Vue.prototype.$http = axios
+// 把不是vue插件的axios变成vue插件
+Vue.use(HttpServer)
+
 Vue.use(ElementUI)
 
 
