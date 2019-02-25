@@ -25,7 +25,7 @@
     </el-row>
 
     <!-- 表格 -->
-    <el-table :data="list" style="width: 100%" height="300px">
+    <el-table :data="list" style="width: 100%" height="350px">
       <!--     
       create_time: 1486720211
       email: "adsfad@qq.com"

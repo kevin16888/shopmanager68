@@ -11,7 +11,7 @@ HttpServer.install = function(Vue) {
   axios.interceptors.request.use(
     function(config) {
       // 在发送请求之前做些什么
-      console.log("请求拦截器被触发了-----");
+      // console.log("请求拦截器被触发了-----");
       // 所有请求发起之后,进行筛选,请求标识是不是login
       // 如果标识是login,不要头部->请求继续发起
       // 当请求标识不是login,先设置头部,再发送请求
@@ -23,7 +23,7 @@ HttpServer.install = function(Vue) {
         // per["Authorization"] = "token";
       }
       // this.$http.get(url) -> 请求拦截处理 ->发请求
-      console.log(config);
+      // console.log(config);
       return config;
     },
     function(error) {
