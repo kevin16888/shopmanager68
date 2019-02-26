@@ -50,12 +50,12 @@ export default {
   },
   //页面加载之前必须先登录,才显示 home.vue
   beforeMount() {
-    if (!localStorage.getItem("token")) {
-      this.$router.push({
-        name: "login"
-      });
-      this.$message.warning("请先登录");
-    }
+    // if (!localStorage.getItem("token")) {
+    //   this.$router.push({
+    //     name: "login"
+    //   });
+    //   this.$message.warning("请先登录");
+    // }
   },
   mounted() {
     // console.log(123);
