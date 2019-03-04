@@ -13,7 +13,6 @@
 
     <el-form class="form" label-position="top" label-width="80px" :model="form">
       <el-tabs @tab-click="changeTab" v-model="active" tab-position="left">
-        
         <el-tab-pane name="1" label="基本信息">
           <el-form-item label="商品名称">
             <el-input v-model="form.goods_name"></el-input>
@@ -28,7 +27,8 @@
             <el-input v-model="form.goods_number"></el-input>
           </el-form-item>
           <el-form-item label="商品分类">
-            <!-- {{selectedOptions}} -->
+            {{selectedOptions}}
+            <!-- 下拉级联选择框 -->
             <el-cascader
               clearable
               expand-trigger="hover"
@@ -48,10 +48,11 @@
           </el-form-item>
         </el-tab-pane>
 
-        <el-tab-pane name="3" label="商品属性"></el-tab-pane>
-        <el-form-item :label="item.attr_name" v-for="item in arrStatic" :key="item.attr_id">
-          <el-input v-model="item.attr_vals"></el-input>
-        </el-form-item>
+        <el-tab-pane name="3" label="商品属性">
+          <el-form-item :label="item.attr_name" v-for="item in arrStatic" :key="item.attr_id">
+            <el-input v-model="item.attr_vals"></el-input>
+          </el-form-item>
+        </el-tab-pane>
 
         <el-tab-pane name="4" label="商品图片">
           <el-form-item>
@@ -125,7 +126,7 @@ export default {
         children: "children"
       },
       //复选框组
-      checkList: [],
+      // checkList: [],
       //动态参数数组
       arrDy: [],
       //静态参数数组
@@ -142,20 +143,21 @@ export default {
     //添加商品
     async addGoods() {
       //1.处理goods_cat
-      this.form.goods_cat = this.selectedOptions.join(",")
+      this.form.goods_cat = this.selectedOptions.join(",");
       // const res = await this.$http.post(`goods`,this.form);
       //2.this.form.pics->在图片上传方法中splice和push
       //3.attrs[{attr_id:?,attr_value:?}]
       //动态参数数组，遍历，返回数组，return "abc", this.arrDy
-      const arr1 = this.arrDy.map((item) => {
+      const arr1 = this.arrDy.map(item => {
         return { attr_id: item.attr_id, attr_value: item.attr_vals };
       });
       //静态数组
-      const arr2 = this.arrStatic.map((item) => {
+      const arr2 = this.arrStatic.map(item => {
         return { attr_id: item.attr_id, attr_value: item.attr_vals };
       });
       this.form.attrs = [...arr1, ...arr2];
-      const res = await this.$http.post('goods', this.form);
+      //发送请求
+      const res = await this.$http.post("goods", this.form);
       const {
         meta: { msg, status },
         data
@@ -192,17 +194,17 @@ export default {
     },
     //点击任何tab都会
     async changeTab() {
-      //如果点了第二个tab
+      //如果点了第二个或第三个tab
       if (this.active === "2" || this.active === "3") {
         //如果不是三级分类
         if (this.selectedOptions.length !== 3) {
           //提示
           this.$message.error("请选择三级分类！");
           //解决bug
-          if(this.active === "2"){
-            this.arrDy = []
+          if (this.active === "2") {
+            this.arrDy = [];
           } else {
-            this.arrStatic = []
+            this.arrStatic = [];
           }
           return;
         }
@@ -232,7 +234,7 @@ export default {
           } = res.data;
           if (status === 200) {
             this.arrDy = data;
-            this.arrDy.forEach((item) => {
+            this.arrDy.forEach(item => {
               //判断后台如果返回空字符串
               //   //如果不是，则split方法
               item.attr_vals =
