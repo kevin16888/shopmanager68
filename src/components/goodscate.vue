@@ -35,6 +35,30 @@
     </el-dialog>
     <!-- 表格 -->
     <el-table height="350" :data="list" style="width: 100%">
+<!--       
+      treeKey>>每个节点唯一标识id
+      parentKey>>父级数据的key名
+      childKey>>子级数据的key名->children
+      levelKey>>当前自己的层级 
+-->
+<!-- 
+      cat_deleted: (...)
+      cat_id: (...)
+      cat_level: (...)
+      cat_name: (...)
+      cat_pid: (...)
+      children: (...)  
+-->
+      <el-tree-grid 
+      prop="cat_name" 
+      width="120" 
+      label="分类名称"
+      treeKey="cat_id"
+      parentKey="cat_pid"
+      childKey="children"
+      levelKey="cat_level"
+      ></el-tree-grid>
+
       <el-table-column label="级别">
         <template slot-scope="scope">
           <span v-if="scope.row.cat_level===0">一级</span>
@@ -72,7 +96,13 @@
 </template>
 
 <script>
+// var ElTreeGrid = require('element-tree-grid');
+import ElTreeGrid from "element-tree-grid";
+
 export default {
+  components:{
+    ElTreeGrid
+  },
   data() {
     return {
       list: [],
@@ -117,7 +147,7 @@ export default {
       );
       // console.log(res)
       this.list = res.data.data.result;
-      // console.log(this.list);
+      console.log(this.list);
 
       this.total = res.data.data.total;
     },
