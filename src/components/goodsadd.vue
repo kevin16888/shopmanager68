@@ -219,6 +219,7 @@ export default {
           } = res.data;
           if (status === 200) {
             this.arrStatic = data;
+            console.log("静态参数数组");
             console.log(this.arrStatic);
           }
         }

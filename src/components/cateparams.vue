@@ -1,7 +1,7 @@
 <template>
   <el-card class="box">
     <cus-bread level1="商品管理" level2="分类参数"></cus-bread>
-    <el-alert class="alert" title="注意：只允许为第三级分类设置参数" type="warning" center show-icon></el-alert>
+    <el-alert class="alert" title="注意：只允许为第三级分类设置参数" type="warning" show-icon></el-alert>
     <el-form class="form" label-position="left" label-width="120px" :model="form">
       <el-form-item label="请选择商品分类">
         {{selectedOptions}}
@@ -18,15 +18,16 @@
       </el-form-item>
     </el-form>
 
-    <el-tabs type="border-card" v-model="active">
+    <el-tabs @tab-click="changeTab()" type="border-card" v-model="active">
       <el-tab-pane name="1" label="动态参数">
         <el-button disabled>设置动态参数</el-button>
         <!-- 表格 -->
-        <el-table height="450px" border stripe :data="arrDy" style="width: 100%">
+        <el-table height="350px" border stripe :data="arrDy" style="width: 100%">
           <!-- 展开 -->
           <el-table-column type="expand" width="120">
             <template slot-scope="scope">
               <!-- 动态tab编辑 -->
+              <!-- scope.row.attr_vals -->
               <el-tag
                 :key="i"
                 v-for="(item,i) in scope.row.attr_vals"
@@ -59,7 +60,23 @@
           </el-table-column>
         </el-table>
       </el-tab-pane>
-      <el-tab-pane name="2" label="静态参数">静态参数</el-tab-pane>
+      <el-tab-pane name="2" label="静态参数">
+        <el-button disabled>设置静态参数</el-button>
+        <el-table height="350px" border stripe :data="arrStatic" style="width: 100%">
+          <!-- 序号 -->
+          <el-table-column type="index" label="#" width="120"></el-table-column>
+
+          <el-table-column prop="attr_name" label="属性名称"></el-table-column>
+          <el-table-column prop="attr_vals" label="属性值"></el-table-column>
+
+          <el-table-column label="操作" width="100">
+            <template>
+              <el-button plain size="mini" type="primary" icon="el-icon-edit" circle></el-button>
+              <el-button plain size="mini" type="danger" icon="el-icon-delete" circle></el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </el-tab-pane>
     </el-tabs>
   </el-card>
 </template>
@@ -80,7 +97,10 @@ export default {
         label: "cat_name",
         children: "children"
       },
+      // 动态数组
       arrDy: [],
+      // 静态数组
+      arrStatic: [],
       //   dynamicTags: ["标签一", "标签二", "标签三"],
       inputVisible: false,
       inputValue: ""
@@ -97,13 +117,13 @@ export default {
       const res = await this.$http.put(
         `categories/${this.selectedOptions[2]}/attributes/${obj.attr_id}`,
         {
+          //put修改>1.找到要修改的数据(分类id+attr_id)2.新数据（请求体）
           attr_name: obj.attr_name,
           attr_sel: obj.attr_sel,
           //以，分割的属性值列表[].join(",")
-          attr_vals: obj.attr_vals.join(',')
+          attr_vals: obj.attr_vals.join(",")
         }
       );
-    //   console.log(res);
     },
     showInput() {
       this.inputVisible = true;
@@ -118,42 +138,75 @@ export default {
         obj.attr_vals.push(inputValue);
         //添加，发送请求
         const res = await this.$http.put(
-        `categories/${this.selectedOptions[2]}/attributes/${obj.attr_id}`,
-        {
-          attr_name: obj.attr_name,
-          attr_sel: obj.attr_sel,
-          attr_vals: obj.attr_vals.join(',')
-        }
-      );
-    //   console.log(res);
+          `categories/${this.selectedOptions[2]}/attributes/${obj.attr_id}`,
+          {
+            attr_name: obj.attr_name,
+            attr_sel: obj.attr_sel,
+            attr_vals: obj.attr_vals.join(",")
+          }
+        );
+        //   console.log(res);
       }
       this.inputVisible = false;
       this.inputValue = "";
     },
+    //改变tab
+    changeTab() {
+      this.getDyOrStatic();
+    },
+    //显示的label一变化触发的方法
     async handleChange() {
+      this.getDyOrStatic();
+    },
+    //获取动态或静态数据
+    async getDyOrStatic() {
       if (this.selectedOptions.length !== 3) {
         this.$message.warning("请先选择三级分类！");
+        if (this.active === "1") {
+          this.arrDy = [];
+        }
+        if (this.active === "2") {
+          this.arrStatic = [];
+        }
         return;
       }
-      //获取动态参数数据
-      //是三级分类，则获取动态参数数据
-      const res = await this.$http.get(
-        `categories/${this.selectedOptions[2]}/attributes?sel=many`
-      );
-      const {
-        meta: { msg, status },
-        data
-      } = res.data;
-      if (status === 200) {
-        this.arrDy = data;
-        this.arrDy.forEach(item => {
-          //判断后台如果返回空字符串
-          //   //如果不是，则split方法
-          item.attr_vals =
-            item.attr_vals.trim().length === 0
-              ? []
-              : item.attr_vals.trim().split(",");
-        });
+      //获取动态数组
+      if (this.active === "1") {
+        const res = await this.$http.get(
+          `categories/${this.selectedOptions[2]}/attributes?sel=many`
+        );
+        const {
+          meta: { msg, status },
+          data
+        } = res.data;
+        if (status === 200) {
+          this.arrDy = data;
+          this.arrDy.forEach(item => {
+            //判断后台如果返回空字符串
+            //   //如果不是，则split方法
+            item.attr_vals =
+              item.attr_vals.trim().length === 0
+                ? []
+                : item.attr_vals.trim().split(",");
+          });
+          console.log("动态参数数据");
+          console.log(this.arrDy);
+        }
+      }
+      //获取静态数组
+      if (this.active === "2") {
+        const res = await this.$http.get(
+          `categories/${this.selectedOptions[2]}/attributes?sel=only`
+        );
+        const {
+          meta: { msg, status },
+          data
+        } = res.data;
+        if (status === 200) {
+          this.arrStatic = data;
+          console.log("静态参数数组");
+          console.log(this.arrStatic);
+        }
       }
     },
     //获取三级商品分类数据
