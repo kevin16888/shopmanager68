@@ -35,28 +35,28 @@
     </el-dialog>
     <!-- 表格 -->
     <el-table height="350" :data="list" style="width: 100%">
-<!--       
+      <!--       
       treeKey>>每个节点唯一标识id
       parentKey>>父级数据的key名
       childKey>>子级数据的key名->children
       levelKey>>当前自己的层级 
--->
-<!-- 
+      -->
+      <!-- 
       cat_deleted: (...)
       cat_id: (...)
       cat_level: (...)
       cat_name: (...)
       cat_pid: (...)
       children: (...)  
--->
-      <el-tree-grid 
-      prop="cat_name" 
-      width="120" 
-      label="分类名称"
-      treeKey="cat_id"
-      parentKey="cat_pid"
-      childKey="children"
-      levelKey="cat_level"
+      -->
+      <el-tree-grid
+        prop="cat_name"
+        width="120"
+        label="分类名称"
+        treeKey="cat_id"
+        parentKey="cat_pid"
+        childKey="children"
+        levelKey="cat_level"
       ></el-tree-grid>
 
       <el-table-column label="级别">
@@ -100,7 +100,7 @@
 import ElTreeGrid from "element-tree-grid";
 
 export default {
-  components:{
+  components: {
     ElTreeGrid
   },
   data() {
@@ -131,7 +131,34 @@ export default {
   },
   methods: {
     // 添加分类 - 发送请求
-    async addCate() {},
+    async addCate() {
+      // cat_pid
+      // cat_level
+      //经分析，三种情况，
+      // 1.一级分类》如果级联的数组为空》cat_pid=0,cat_level=0
+      if (this.selectedOptions.length === 0) {
+        this.form.cat_level = 0;
+        this.form.cat_pid = 0;
+      }
+      // 2.二级分类》如果级联的数组长度为1》cat_pid=上一级id(this.selectedOptions[0]),cat_level=1
+      if (this.selectedOptions.length === 1) {
+        this.form.cat_level = 1;
+        this.form.cat_pid = this.selectedOptions[0];
+      }
+      // 3.三级分类》如果级联的数组长度为2》cat_pid=上一级id(this.selectedOptions[1]),cat_level=2
+      if (this.selectedOptions.length === 2) {
+        this.form.cat_level = 2;
+        this.form.cat_pid = this.selectedOptions[1];
+      }
+      const res = await this.$http.post(`categories`, this.form);
+      // console.log(res);
+      const {meta:{status,msg}} = res.data;
+      if(status === 201){
+        //关闭对话框并刷新页面数据
+        this.dialogFormVisibleAdd = false;
+        this.getGoodsCate();
+      }
+    },
     // 添加分类- 显示对话框
     async addGoodsCate() {
       // 获取两级分类的数据
