@@ -12,6 +12,7 @@ import Goodsadd from "@/components/goodsadd.vue";
 import Cateparams from "@/components/cateparams.vue";
 import Goodscate from "@/components/goodscate.vue";
 import Order from "@/components/order.vue";
+import Reports from "@/components/reports.vue";
 
 Vue.use(Router);
 
@@ -62,6 +63,11 @@ const router =  new Router({
           name: "orders",
           path: "/orders",
           component: Order
+        },
+        {
+          name: "reports",
+          path: "/reports",
+          component: Reports
         }
       ]
     },
