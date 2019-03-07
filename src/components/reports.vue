@@ -24,7 +24,7 @@ export default {
       //2.reports/type=1
       //3.reports/type/1  
       const res = await this.$http.get(`reports/type/1`);
-    //console.log(option2);
+    //console.log(option2);测试是否拿到数据
       const option2 = res.data.data;
       const option1 = {
         title: {

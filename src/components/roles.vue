@@ -3,7 +3,7 @@
     <!-- 面包屑 -->
     <cus-bread level1="权限管理" level2="角色列表"></cus-bread>
     <el-button class="btn" type="primary">添加角色</el-button>
-    <el-table :data="roles" style="width: 100%" height="350px">
+    <el-table @expand-change="fn" :data="roles" style="width: 100%" height="350px">
       <el-table-column type="expand" width="60">
         <template slot-scope="scope">
           <!-- 行列布局 -->
@@ -108,6 +108,17 @@ export default {
     this.getRoles();
   },
   methods: {
+    //解决bug，列表显示时，只展开一个
+    fn(row, expandedRows) {
+      console.log("----");
+      // console.log(row);
+      // console.log(expandedRows);
+      //展开第一个 [a]
+      //如果数组【】length>1,则展开第一个时【a,b】
+      if (expandedRows.length > 1) {
+        expandedRows.shift();
+      }
+    },
     //-------分配权限，发送请求-------------
     async setRights() {
       //获取全选节点id  getCheckedKeys

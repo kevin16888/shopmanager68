@@ -1,22 +1,25 @@
 import Vue from "vue";
 import Router from "vue-router";
+import { Message } from "element-ui";
 // import Login from '../components/login.vue'
-import Login from "@/components/login.vue";
-import Home from "@/components/home.vue";
-import Users from "@/components/user1.vue";
-import Rights from "@/components/rights.vue";
-import Roles from "@/components/roles.vue";
-import { Message } from 'element-ui';
-import Goodslist from "@/components/goodslist.vue";
-import Goodsadd from "@/components/goodsadd.vue";
-import Cateparams from "@/components/cateparams.vue";
-import Goodscate from "@/components/goodscate.vue";
-import Order from "@/components/order.vue";
-import Reports from "@/components/reports.vue";
+
+//路由懒加载
+// const Foo = () => import('./Foo.vue')
+const Login = () => import("@/components/login.vue");
+const Home = () => import("@/components/home.vue");
+const Users = () => import("@/components/user1.vue");
+const Rights = () => import("@/components/rights.vue");
+const Roles = () => import("@/components/roles.vue");
+const Goodslist = () => import("@/components/goodslist.vue");
+const Goodsadd = () => import("@/components/goodsadd.vue");
+const Cateparams = () => import("@/components/cateparams.vue");
+const Goodscate = () => import("@/components/goodscate.vue");
+const Order = () => import("@/components/order.vue");
+const Reports = () => import("@/components/reports.vue");
 
 Vue.use(Router);
 
-const router =  new Router({
+const router = new Router({
   routes: [
     {
       name: "home",
@@ -84,27 +87,27 @@ const router =  new Router({
 router.beforeEach((to, from, next) => {
   console.log("路由导航守卫执行-----");
   //to--要去的路由配置对象(name)，from当前的路由配置对象(name)
-  console.log(to,from);
+  console.log(to, from);
   //next方法让路由配置继续生效
   //1.如果要去的是login >> next()
-  if(to.name === 'login'){
+  if (to.name === "login") {
     next();
-  } 
-  //2.如果要去的不是login >> 
+  }
+  //2.如果要去的不是login >>
   else {
     //2.1 !token > 去登录
-    const token = localStorage.getItem('token')
-    if(!token){
+    const token = localStorage.getItem("token");
+    if (!token) {
       // this.$message.warning("请先登录");
       Message.warning("请先登录");
       router.push({
-        name:'login'
-      })
-      //2.2 token > next() 
-      return;      
-    } 
+        name: "login"
+      });
+      //2.2 token > next()
+      return;
+    }
     next();
   }
-})
+});
 
 export default router;

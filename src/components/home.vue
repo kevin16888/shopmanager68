@@ -16,9 +16,10 @@
     <el-container>
       <el-aside class="aside" width="200px">
         <el-menu
+          @select="fn"
           :unique-opened="true"
           :router="true"
-          default-active="2"
+          :default-active="$route.name"
           class="el-menu-vertical-demo"
         >
           <!-- 1 -->
@@ -64,6 +65,14 @@ export default {
     this.getMenus();
   },
   methods: {
+    //回到之前激活状态
+    fn(index, indexPath){
+      // console.log(index);//users
+      // console.log(indexPath);//[1,users]
+      //获取当前点击的路由数据
+      console.log(this.$route.name);
+      
+    },
     async getMenus() {
       //动态导航
       const res = await this.$http.get(`menus`);
