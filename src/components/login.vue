@@ -61,7 +61,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .login-wrap {
   /* 注意: 百分比布局 父元素height */
   height: 100%;

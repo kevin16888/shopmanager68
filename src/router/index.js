@@ -1,5 +1,5 @@
 import Vue from "vue";
-import Router from "vue-router";
+import VueRouter from "vue-router";
 import { Message } from "element-ui";
 // import Login from '../components/login.vue'
 
@@ -17,9 +17,9 @@ const Goodscate = () => import("@/components/goodscate.vue");
 const Order = () => import("@/components/order.vue");
 const Reports = () => import("@/components/reports.vue");
 
-Vue.use(Router);
+Vue.use(VueRouter);
 
-const router = new Router({
+const router = new VueRouter({
   routes: [
     {
       name: "home",

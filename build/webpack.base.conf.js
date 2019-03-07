@@ -24,6 +24,17 @@ module.exports = {
   entry: {
     app: './src/main.js'
   },
+  externals: {
+    // jquery: 'jQuery'
+    //key>>js的包名>>package.json
+    //value>暴露给全局作用域的变量名
+    "vue":"Vue",
+    "vue-router":"VueRouter",
+    "element-ui":"ELEMENT",
+    "axios":"axios",
+    "moment":"moment",
+    "echarts":"echarts"
+  },
   output: {
     path: config.build.assetsRoot,
     filename: '[name].js',

@@ -5,14 +5,14 @@ import App from './App'
 import router from './router'
 import CusBread from '@/components/cusBread.vue'
 import '@/assets/css/base.css'
-import ElementUI from 'element-ui'
-import 'element-ui/lib/theme-chalk/index.css'
+import ELEMENT from 'element-ui'
+// import 'element-ui/lib/theme-chalk/index.css'
 import moment from 'moment'
 import HttpServer from '@/http.js'
 
 // 把不是vue插件的axios变成vue插件
 Vue.use(HttpServer)
-Vue.use(ElementUI)
+Vue.use(ELEMENT)
 Vue.config.productionTip = false
 Vue.component(CusBread.name,CusBread);
 
