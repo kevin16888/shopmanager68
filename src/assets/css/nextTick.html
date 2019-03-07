@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <script src="../../../node_modules/vue/dist/vue.js"></script>
+  </head>
+
+  <body>
+    <!-- 设置vue所管理的视图 -->
+    <div id="app">
+      <p ref="txt">{{ count }}</p>
+      <button @click="fn()">按钮</button>
+    </div>
+    <script>
+      //实例化vue对象
+      const vm = new Vue({
+        //指定vue管理的视图
+        el: "#app",
+        data: {
+          count: 1
+        },
+        methods: {
+          fn() {
+            this.count++;
+            //通过操作dom的方式获取p的内容
+            // console.log(this.$refs.txt.innerText);
+            //实例方法：this.$nextTick(cb)
+            this.$nextTick(() => {
+              //操作DOM
+              console.log(this.$refs.txt.innerText);
+            });
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
